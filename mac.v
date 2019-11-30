@@ -31,7 +31,7 @@ module mac(
     ,w_2
     ,w_3
     ,result
-
+    
     );
 input clk;
 input [15:0] ifm_0;
