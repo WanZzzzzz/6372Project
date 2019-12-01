@@ -1,0 +1,7 @@
+this is a test file,
+it is used for test the function
+of the fgets() and fputs()
+of the MIF()
+
+
+q
