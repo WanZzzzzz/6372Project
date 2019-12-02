@@ -35,7 +35,10 @@ int main(int argc, char* argv[])
 																	//But the return value will be NULL.
 		i++;
 		if(i<3)continue;
-			
+		
+		char prefix[] = ()
+
+		
 		strcpy(cat,zeros);
 		strcat(cat,line);
 		
@@ -66,7 +69,30 @@ int main(int argc, char* argv[])
 
 
 
-
+char* hex_convert(int dNum) {
+	long int dNum,remainder,quotient;
+	int i=1,j,q = 0,temp;
+	char hexNum_rev[100];
+	char hexNum[100];
+	quotient = dNum;
+	while(quotient!=0) {
+		temp = quotient % 16;
+		//To convert integer into character
+		if( temp < 10)
+		           temp =temp + 48; else
+		         temp = temp + 55;
+		hexNum_rev[i++]= temp;
+		quotient = quotient / 16;
+	}
+	//printf("Equivalent hexadecimal value of decimal number %d: ",decimalNumber);
+	for (j = i -1 ;j> 0;j--){
+		hexNum[q] = hexNum_rev[j];
+		q++;
+		//printf("%c",hexNum[j]);
+	}
+	
+	return hexNum;
+}
 
 
 
