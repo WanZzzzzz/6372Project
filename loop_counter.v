@@ -72,8 +72,8 @@ output carry_out;
 reg [7:0] n = 0;
 reg carry_out = 0;
 always@(carry_in) begin
-    if ((n==in_channel-1)&&(carry_in==1)) begin n<=0;carry_out<=1;end
-    else if (carry_in == 1) begin n<=n+4;carry_out=0;end
+    if ((n>=(in_channel-1)/4)&&(carry_in==1)) begin n<=0;carry_out<=1;end
+    else if (carry_in == 1) begin n<=n+1;carry_out=0;end
     else begin n <= n;carry_out=0;end
     
 end
@@ -153,7 +153,8 @@ module loop(
     ,n
     ,i
     ,j
-    ,ready);
+//    ,neuron_ready
+    ,layer_ready);
 input clk;
 output [7:0] m;
 output [7:0] r;
@@ -161,7 +162,8 @@ output [7:0] c;
 output [7:0] n;
 output [3:0] i;
 output [3:0] j;
-output ready;
+//output neuron_ready;
+output layer_ready;
 
 wire carry1;
 wire carry2;
@@ -173,6 +175,9 @@ reg [3:0] k = 5;
 reg [7:0] in_channel = 1;
 reg [7:0] out_size = 28;
 reg [7:0] out_channel = 6;
+
+//assign neuron_ready = carry3;
+
 loop_counter1 l1(
     .clk(clk),
     .k_size(k),
@@ -203,5 +208,5 @@ loop_counter6 l6(
     .carry_in(carry5),
     .out_channel(out_channel),
     .m(m),
-    .carry_out(ready));
+    .carry_out(layer_ready));
 endmodule

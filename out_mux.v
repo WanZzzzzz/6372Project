@@ -27,17 +27,19 @@ module out_mux(
     ,psum_pkd
     );
 input clk;
-input [1:0] sel;
+input sel;
 input [15:0] din;
 output [63:0] psum_pkd;
-
+reg [1:0] pos;
 reg [15:0] psum_0 = 0;
 reg [15:0] psum_1 = 0;
 reg [15:0] psum_2 = 0;
 reg [15:0] psum_3 = 0;
 reg [63:0] psum_pkd;
-always@(posedge clk) begin
-    case(sel)
+always@(posedge sel) begin
+    if(pos == 3) pos <= 0;
+    else pos <= pos + 1;
+    case(pos)
     4'b00: psum_0 <= din;
     4'b01: psum_1 <= din;
     4'b10: psum_2 <= din;
