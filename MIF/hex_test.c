@@ -38,8 +38,10 @@ char* hex_convert(int dNum) {
  
  char* return_my_name()
 {
-	char* name = "Jiajun";					//Should use String pointers!
-    return name;
+	char* name;					//Should use String pointers!
+    char name1[7] = "Jiajun";
+	name = name1;
+	return name;
 }
  
 int main()
@@ -47,7 +49,8 @@ int main()
 	char a[]="Hello!";
 	char *b;
 	b = return_my_name();
-	printf("%s",b);
+	strcat(a,b);
+	printf("%s",a);
 	
 	
 	

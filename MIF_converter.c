@@ -4,7 +4,6 @@
 
 int main(int argc, char* argv[])
 {
-	char* hex_convert(int); 
     //har const* const fileName = argv[1]; /* should check that argc > 1 */
     
 	char fileName[] = "input.coe";
@@ -28,23 +27,22 @@ int main(int argc, char* argv[])
 	char zeros[] = "000000000000000000000000000000000000000000000000";
 	char cat[100];
 	char *pos;
-	
-	char colon[4] = " : ";
-	
+	char *prefix;
+	char colon[4];
 	while (!feof(file)){
 		//for(int j = 0; j < 4; j++){
-        char *prefix;
+        
 		if(fgets(line, sizeof(line), file) != NULL){				//Caution: If EOF is encountered, the str remain unchanged!
 																	//But the return value will be NULL.
 		i++;
 		if(i<3)continue;
 		
 		prefix = hex_convert(i-3);
-		
+		colon = " : ";
 		strcat(prefix,colon);
 		strcpy(cat,prefix);
 		
-		strcat(cat,zeros);
+		strcpy(cat,zeros);
 		strcat(cat,line);
 		
 		//printf("%c\n",cat[strlen(cat)-3]);
@@ -75,12 +73,10 @@ int main(int argc, char* argv[])
 
 
 char* hex_convert(int dNum) {
-	
 	long int remainder,quotient;
-	int i=1,j,q = 2,temp;
+	int i=1,j,q = 0,temp;
 	char hexNum_rev[100];
-	char hexNum[4] = "000";
-	char* hex;
+	char hexNum[4]="000";
 	quotient = dNum;
 	while(quotient!=0) {
 		temp = quotient % 16;
@@ -92,20 +88,13 @@ char* hex_convert(int dNum) {
 		quotient = quotient / 16;
 	}
 	//printf("Equivalent hexadecimal value of decimal number %d: ",decimalNumber);
-	for (j = 1 ;j < i;j++){
-		
+	for (j = i -1 ;j> 0;j--){
 		hexNum[q] = hexNum_rev[j];
-		q--;
+		q++;
 		//printf("%c",hexNum[j]);
-		
-		
 	}
 	
-	hex = hexNum;
-	
-	return hex;
-	
-	
+	return hexNum;
 }
 
 
