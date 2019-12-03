@@ -22,77 +22,78 @@
 
 module controller(
     clock
+    ,m
     ,r
     ,c
+    ,n
     ,i
     ,j
     ,ifm_addr
     ,weight_addr
-    ,out_addr
+//    ,out_addr
     ,weight_ena
     ,input_ena
     ,out_ena
     ,wea
     ,out_wea             				// output buf write enable
-    ,out_chan_idx       				// output channel index: 0~3
-    ,out_reg_idx           				// output neuron index: 0~15
-	,cell_ready           // the value in 16 registers is ready to go into output buffer
+//    ,out_chan_idx       				// output channel index: 0~3
+//    ,cell_ready           			// the value in 16 registers is ready to go into output buffer
     );
-parameter 	in_size = 4;				//image feature map size: 4*4
-parameter 	out_size = 2;
-parameter 	in_channel = 1;
-parameter  	out_channel = 1;
-parameter  	k = 3;						//weight matrix size: 3*3
-parameter 	padding = 0;				//padding size
-parameter 	stride = 0;
-input 		clock;
-input 		[3:0] r;					//output iterator row
-input 		[3:0] c;					//output iterator column
-input 		[3:0] i;					//weight iterator row
-input 		[3:0] j;					//weight iterator column
-output 		[7:0] ifm_addr;				//image feature map address
-output 		[7:0] weight_addr;			//weight address
-output 		[7:0] out_addr;
-output 		weight_ena = 1;
-output 		input_ena = 1;
-output 		out_ena = 1;
-output 		wea;
-output 		[7:0] out_wea;
-output 		[1:0] out_chan_idx;
-output 		[3:0] out_ifm_idx;
-output cell_ready;
+    
+input clock;
+input [7:0] m;
+input [7:0] r;							//output iterator row
+input [7:0] c;							//output iterator column
+input [7:0] n;							//weight iterator row
+input [3:0] i;							//weight iterator column
+input [3:0] j;
 
-reg 		[7:0] ifm_addr = 0;
-reg 		[7:0] weight_addr = 0;
-wire 		[7:0] out_addr;
-wire 		[3:0] out_reg_idx;
+output [15:0] ifm_addr;					//image feature map address
+output [15:0] weight_addr;				//weight address
+//output [15:0] out_addr;
+output weight_ena = 1;
+output input_ena = 1;
+output out_ena = 1;
+output wea;
+output [7:0] out_wea;
+//output [1:0] out_chan_idx;
 
 
-reg			weight_ena;
-reg			input_ena;
-reg 		out_ena;
+reg [15:0] ifm_addr = 0;
+reg [15:0] weight_addr = 0;
+//reg [15:0] out_addr;
+wire [3:0] out_reg_idx;
 
-reg 		wea = 0;
-reg 		[7:0] out_wea = 1;
-reg 		[3:0] out_chan_idx = 0;  // temporary set as first channel
 
-reg 		[7:0] out_addr_i; 
+
+reg wea = 0;
+reg [7:0] out_wea = 1;
+//reg [3:0] out_chan_idx = 0;  // temporary set as first channel
+
+
+
+reg [3:0] k = 5;
+reg [7:0] in_size = 8'd32;
+reg [7:0] in_channel = 1;
+reg [7:0] out_size = 8'd28;
+reg [7:0] out_channel = 6;
+
 
 always@(posedge clock) begin
-    ifm_addr <= (r+i)*in_size+(c+j);
-    weight_addr <= i*k+j;
-    out_addr_i <= r*out_size + c;
+    ifm_addr <= (n/4)*in_size*in_size + (r+i)*in_size + (c+j);
+    weight_addr <= m*in_channel*k*k + (n/4)*k*k + i*k + j;
+//    out_addr_i <= r*out_size + c;
     end
     
-shift_reg out_addr_delay(
-    .clk(clock),
-    .in(out_addr_i),
-    .out(out_addr));
+//shift_reg out_addr_delay(
+//    .clk(clock),
+//    .in(out_addr_i),
+//    .out(out_addr));
 
-shift_reg out_reg_delay(
-    .clk(clock),
-    .in(out_addr_i),
-    .out(out_reg_idx));
+//shift_reg out_reg_delay(
+//    .clk(clock),
+//    .in(out_addr_i),
+//    .out(out_reg_idx));
         
 endmodule
 
