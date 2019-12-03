@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     
 	char fileName[] = "input.coe";
 	//char fileName[] = "test.txt";
-	char MIFName[]  = "MIF.txt";
+	char MIFName[]  = "MIF.hex";
 	FILE* file = fopen(fileName, "rb"); /* should check the result */
     FILE* MIF  = fopen(MIFName,"w+");
 	char line[256];

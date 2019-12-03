@@ -16,9 +16,10 @@ int main(int argc, char* argv[])
 	int i = 0;
     
 	////////////// Write head for MIF file//////////////////////
-	fputs("%  multiple-line comment\n",MIF);
-	fputs("multiple-line comment  %\n",MIF);
+	//fputs("%  multiple-line comment\n",MIF);
+	//fputs("multiple-line comment  %\n",MIF);
 	fputs("-- single-line comment\n",MIF);
+	fputs("-- Caution: Multiple comment % is not allowed!",MIF);
 	fputs("DEPTH = 256;                   -- The size of data in bits\n",MIF);
 	fputs("WIDTH = 16;                    -- The size of memory in words\n",MIF);
 	fputs("ADDRESS_RADIX = HEX;          -- The radix for address values\n",MIF);
