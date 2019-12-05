@@ -30,20 +30,22 @@ input clk;
 input sel;
 input [15:0] din;
 output [63:0] psum_pkd;
-reg [1:0] pos;
+reg [1:0] pos = 0;
 reg [15:0] psum_0 = 0;
 reg [15:0] psum_1 = 0;
 reg [15:0] psum_2 = 0;
 reg [15:0] psum_3 = 0;
-reg [63:0] psum_pkd;
-always@(posedge sel) begin
-    if(pos == 3) pos <= 0;
-    else pos <= pos + 1;
+reg [63:0] psum_pkd = 0;
+always@(posedge clk) begin
+    if (sel) begin
+        if(pos == 3) pos <= 0;
+        else pos <= pos + 1;
+        end
     case(pos)
-    4'b00: psum_0 <= din;
-    4'b01: psum_1 <= din;
-    4'b10: psum_2 <= din;
-    4'b11: psum_3 <= din;
+    2'b00: psum_0 <= din;
+    2'b01: psum_1 <= din;
+    2'b10: psum_2 <= din;
+    2'b11: psum_3 <= din;
     endcase
 end
 always@(posedge clk) begin

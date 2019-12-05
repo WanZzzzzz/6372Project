@@ -64,15 +64,16 @@ wire [63:0] dout; // suspended wire, any problem?
 //----------------  signals for write control----------------//
 
 wire neuron_rdy;
+wire wr_rdy;
 wire plane_rdy;
-wire clear;
 wire [15:0] sum;
 
 wire layer_ready;
 wire acc_enable;
 wire start;
+wire start_2;
 assign result = sum;
-assign clear = neuron_rdy;
+
 
 loop for_loop(
     .clk(clk),
@@ -102,7 +103,8 @@ controller ctl(
     .wea(wea),
     .out_wea(out_wea),
     .acc_enable(acc_enable),
-    .start(start));
+    .start(start),
+    .start_2(start_2));
     
 blk_mem_input ifm_buf (
   .clka(clk),    // input wire clka
@@ -157,7 +159,7 @@ acc accumulator(
     .in_1(product_1),
     .in_2(product_2),
     .in_3(product_3),
-    .clear(clear),
+    .clear(neuron_rdy),
     .enable(acc_enable),
     .sum(sum)
    
@@ -166,7 +168,9 @@ acc accumulator(
 neu_rdy neuron_ok(
     .in(weight_addr),
     .start(start),
+    .start_2(start_2),
     .neuron_rdy(neuron_rdy),
+    .write_rdy(wr_rdy),
     .out_addr(out_addr));
     
 plane_rdy plane_ok(
@@ -175,13 +179,14 @@ plane_rdy plane_ok(
     
     
 out_mux sel_channel(
+    .clk(clk),
     .sel(plane_rdy),
     .din(sum),
     .psum_pkd(psum_pkd));   
     
 blk_mem_output out_buf(
     .clka(clk),
-    .ena(neuron_rdy),
+    .ena(wr_rdy),
     .wea(out_wea),
     .addra(out_addr),
     .dina(psum_pkd),
