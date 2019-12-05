@@ -42,18 +42,21 @@
 
 module neu_rdy(
     in
+    ,start
     ,neuron_rdy
     ,out_addr
     );
 input [15:0] in;
+input start;
 output neuron_rdy;
 output [15:0] out_addr;
 reg [15:0] out_addr = -1'b1;
 reg neuron_rdy = 0;
-reg [7:0] num_to_cnt = 8'd24; // (in_channel/4+1) * 5 * 5 - 1
+reg [7:0] num_to_cnt = 8'd24 ; // (in_channel/4+1) * 5 * 5 - 1   ;  +2 is to delay the signal for 2 cycles
 reg [7:0] counter = 0;
 always@(in) begin
-    if(counter == num_to_cnt) begin counter<=0;neuron_rdy<=1;out_addr<= out_addr+1;end
+    if(!start) counter<=counter;
+    else if(counter == num_to_cnt) begin counter<=0;neuron_rdy<=1;out_addr<= out_addr+1;end
     else begin counter<= counter+1; neuron_rdy<=0;end    
 end 
 endmodule

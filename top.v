@@ -70,6 +70,7 @@ wire [15:0] sum;
 
 wire layer_ready;
 wire acc_enable;
+wire start;
 assign result = sum;
 assign clear = neuron_rdy;
 
@@ -100,7 +101,8 @@ controller ctl(
     .out_ena(o_ena),
     .wea(wea),
     .out_wea(out_wea),
-    .acc_enable(acc_enable));
+    .acc_enable(acc_enable),
+    .start(start));
     
 blk_mem_input ifm_buf (
   .clka(clk),    // input wire clka
@@ -162,7 +164,8 @@ acc accumulator(
     );
 
 neu_rdy neuron_ok(
-    .in(w_3),
+    .in(weight_addr),
+    .start(start),
     .neuron_rdy(neuron_rdy),
     .out_addr(out_addr));
     
