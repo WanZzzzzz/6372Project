@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb3_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb3" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="391858245833fs"></ZoomStartTime>
+      <ZoomEndTime time="392737950835fs"></ZoomEndTime>
+      <Cursor1Time time="392209111000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="141"></NameColumnWidth>
+      <ValueColumnWidth column_width="122"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="21" />
+   <wave_markers>
+      <marker time="391990000000" label="" />
+   </wave_markers>
+   <wvobject fp_name="/tb3/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/ifm_3" type="array">
+      <obj_property name="ElementShortName">ifm_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ifm_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/w_3" type="array">
+      <obj_property name="ElementShortName">w_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">w_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/out_buf/addra" type="array">
+      <obj_property name="ElementShortName">addra[7:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/m" type="array">
+      <obj_property name="ElementShortName">m[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/r" type="array">
+      <obj_property name="ElementShortName">r[7:0]</obj_property>
+      <obj_property name="ObjectShortName">r[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/c" type="array">
+      <obj_property name="ElementShortName">c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">c[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/n" type="array">
+      <obj_property name="ElementShortName">n[7:0]</obj_property>
+      <obj_property name="ObjectShortName">n[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/i" type="array">
+      <obj_property name="ElementShortName">i[3:0]</obj_property>
+      <obj_property name="ObjectShortName">i[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/j" type="array">
+      <obj_property name="ElementShortName">j[3:0]</obj_property>
+      <obj_property name="ObjectShortName">j[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/for_loop/layer_ready" type="logic">
+      <obj_property name="ElementShortName">layer_ready</obj_property>
+      <obj_property name="ObjectShortName">layer_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/ctl/ifm_addr" type="array">
+      <obj_property name="ElementShortName">ifm_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ifm_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/ctl/weight_addr" type="array">
+      <obj_property name="ElementShortName">weight_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">weight_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/neuron_rdy" type="logic">
+      <obj_property name="ElementShortName">neuron_rdy</obj_property>
+      <obj_property name="ObjectShortName">neuron_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/plane_rdy" type="logic">
+      <obj_property name="ElementShortName">plane_rdy</obj_property>
+      <obj_property name="ObjectShortName">plane_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/neuron_ok/out_addr" type="array">
+      <obj_property name="ElementShortName">out_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">out_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/accumulator/sum" type="array">
+      <obj_property name="ElementShortName">sum[15:0]</obj_property>
+      <obj_property name="ObjectShortName">sum[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/accumulator/in_3" type="array">
+      <obj_property name="ElementShortName">in_3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">in_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/out_buf/dina" type="array">
+      <obj_property name="ElementShortName">dina[63:0]</obj_property>
+      <obj_property name="ObjectShortName">dina[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/sel_channel/psum_pkd" type="array">
+      <obj_property name="ElementShortName">psum_pkd[63:0]</obj_property>
+      <obj_property name="ObjectShortName">psum_pkd[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb3/top_inst/neuron_ok/write_rdy" type="logic">
+      <obj_property name="ElementShortName">write_rdy</obj_property>
+      <obj_property name="ObjectShortName">write_rdy</obj_property>
+   </wvobject>
+</wave_config>

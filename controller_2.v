@@ -44,6 +44,7 @@ module neu_rdy(
     in
     ,start
     ,start_2  // control output address
+    ,plane_rdy  // control output's position
     ,neuron_rdy
     ,write_rdy
     ,out_addr
@@ -51,6 +52,7 @@ module neu_rdy(
 input [15:0] in;
 input start;
 input start_2;
+input plane_rdy;
 output neuron_rdy;
 output write_rdy;
 output [15:0] out_addr;
@@ -58,8 +60,10 @@ reg [15:0] out_addr = -1'b1;
 reg neuron_rdy = 0;
 reg write_rdy = 0;
 reg [7:0] num_to_cnt = 8'd24 ; // (in_channel/4+1) * 5 * 5 - 1   ;  +2 is to delay the signal for 2 cycles
+reg [15:0] coe = 16'd196;
 reg [7:0] counter = 0;
 reg [7:0] counter_2 = 0;
+reg [7:0] counter_3 = 0;
 always@(in) begin
     if(!start) counter<=counter;
     else if(counter == num_to_cnt) begin counter<=0;neuron_rdy<=1;end
@@ -70,6 +74,15 @@ always@(in) begin
     else if(counter_2 == num_to_cnt) begin counter_2<=0;write_rdy <= 1;out_addr<=out_addr + 1;end
     else begin counter_2<= counter_2+1;write_rdy <= 0;end    
 end 
+always@(in) begin
+    if(plane_rdy == 1) counter_3 <= counter_3 + 1;
+    else counter_3 <= counter_3;
+    end
+always@(in) begin
+    if(plane_rdy == 1) begin counter_3 <= counter_3 + 1; out_addr <= (counter_3)*coe; end
+    else counter_3 <= counter_3;
+    end
+
 endmodule
 
 

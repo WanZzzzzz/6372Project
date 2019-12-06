@@ -169,6 +169,7 @@ neu_rdy neuron_ok(
     .in(weight_addr),
     .start(start),
     .start_2(start_2),
+    .plane_rdy(plane_rdy),
     .neuron_rdy(neuron_rdy),
     .write_rdy(wr_rdy),
     .out_addr(out_addr));
