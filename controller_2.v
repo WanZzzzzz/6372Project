@@ -64,11 +64,13 @@ reg [15:0] coe = 16'd196;
 reg [7:0] counter = 0;
 reg [7:0] counter_2 = 0;
 reg [7:0] counter_3 = 0;
+
 always@(in) begin
     if(!start) counter<=counter;
     else if(counter == num_to_cnt) begin counter<=0;neuron_rdy<=1;end
     else begin counter<= counter+1; neuron_rdy<=0;end    
 end 
+
 always@(in) begin
     if(!start_2) counter_2<=counter_2;
     else if(counter_2 == num_to_cnt) begin counter_2<=0;write_rdy <= 1;out_addr<=out_addr + 1;end
