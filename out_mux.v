@@ -20,23 +20,27 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module out_mux(
-    clk
+module write_data(
+     neuron_rdy
+     ,plane_rdy
     ,sel
-    ,din
-    ,psum_pkd
+    ,din_acc
+    ,din_ram
+    ,dout
     );
-input clk;
+input neuron_rdy;
+input plane_rdy;
 input sel;
-input [15:0] din;
-output [63:0] psum_pkd;
+input [15:0] din_acc;
+input [15:0] din_ram;
+output [63:0] dout;
 reg [1:0] pos = 0;
 reg [15:0] psum_0 = 0;
 reg [15:0] psum_1 = 0;
 reg [15:0] psum_2 = 0;
 reg [15:0] psum_3 = 0;
 reg [63:0] psum_pkd = 0;
-always@(posedge clk) begin
+always@(posedge neuron_rdy) begin
     if (sel) begin
         if(pos == 3) pos <= 0;
         else pos <= pos + 1;
