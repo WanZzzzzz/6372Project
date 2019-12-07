@@ -55,8 +55,8 @@ wire [63:0] weight_dout;						//doesn't have any significance, just random value
 
 wire [15:0] ifm_0, ifm_1,ifm_2,ifm_3;
 wire [15:0] w_0, w_1,w_2,w_3;
-wire [15:0] product_0,product_1,product_2,product_3;
-
+//wire [15:0] product_0,product_1,product_2,product_3;
+wire [15:0] result_muladd;						//result of multiplier_adder,doesn't need four results
 
 
 wire [63:0] psum_pkd;
@@ -107,7 +107,7 @@ controller ctl(
     .start(start),
     .start_2(start_2));
     
-blk_mem_input ifm_buf (
+/*blk_mem_input ifm_buf (
   .clka(clk),    								// input wire: clock
   .ena(in_ena),      							// input wire: total enable
   .wea(wea),      								// input wire: [0 : 0] write enable
@@ -115,6 +115,8 @@ blk_mem_input ifm_buf (
   .dina(dina),   								// input wire: [63 : 0] write value,useless(don't need to write,wea always 0!)
   .douta(ifm_dout)  							// output wire: [63 : 0]  read value(image feature map value)
 );
+
+
 
 blk_mem_weight weight_buf (
   .clka(clk),    								// input wire: clock
@@ -124,6 +126,33 @@ blk_mem_weight weight_buf (
   .dina(dina),    								// input wire: [63 : 0] write value,useless(don't need to write, wea always 0!)
   .douta(weight_dout)  							// output wire: [63 : 0] read value(weight value)
 );
+
+*/
+
+
+RAM1 ifm_buf(
+	ifm_addr
+	,clk
+	,dina
+	,in_ena
+	,wea
+	,ifm_out
+
+
+);
+
+
+RAM1 weight_buf(
+	weight_addr
+	,clk
+	,dina
+	,w_ena
+	,wea
+	,weight_out
+
+
+);
+
 
 assign ifm_0 = ifm_dout[63:48];
 assign ifm_1 = ifm_dout[47:32];
@@ -140,7 +169,7 @@ assign w_3 = weight_dout[15:0];
 //assign dout_2 = dout[31:16];
 //assign dout_3 = dout[15:0];
     
-mac inst(
+/*mac inst(
     .clk(clk),
     .ifm_0(ifm_0),
     .ifm_1(ifm_1),
@@ -155,8 +184,26 @@ mac inst(
     .product_2(product_2),
     .product_3(product_3)
     );
+	 
+*/
 
-acc accumulator(
+muladd inst(
+	clk
+	,ifm_0
+	,ifm_1
+	,ifm_2
+	,ifm_3
+	,w_0
+	,w_1
+	,w_2
+	,w_3
+	,result_muladd
+
+);
+ 
+	 
+
+/*acc accumulator(
     .clk(clk),
     .in_0(product_0),
     .in_1(product_1),
@@ -167,6 +214,16 @@ acc accumulator(
     .sum(sum)
    
     );
+*/
+acc accumulator(
+    clk
+    ,result_muladd
+    ,neuron_rdy
+    ,acc_enable
+    ,sum
+   
+    );
+
 
 neu_rdy neuron_ok(
     .in(weight_addr),
@@ -186,8 +243,9 @@ out_mux sel_channel(
     .clk(clk),
     .sel(plane_rdy),
     .din(sum),
-    .psum_pkd(psum_pkd));   
-    
+    .psum_pkd(psum_pkd)
+);   
+/*    
 blk_mem_output out_buf(
     .clka(clk),
     .ena(wr_rdy),
@@ -195,5 +253,19 @@ blk_mem_output out_buf(
     .addra(out_addr),
     .dina(psum_pkd),
     .douta(dout));
+
+*/
+
+RAM1 out_buf(
+	out_addr
+	,clk
+	,psum_pkd
+	,wr_rdy
+	,out_wea
+	,dout
+
+
+);
+
     
 endmodule

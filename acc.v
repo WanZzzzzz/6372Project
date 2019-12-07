@@ -22,20 +22,19 @@
 
 module acc(
      clk
-	,in_0
-	,in_1
-	,in_2
-	,in_3
+	,sum_muladd
 	,clear
 	,enable
 	,sum
 	);
 	
 input clk;
-input [15:0] in_0;
+/*input [15:0] in_0;
 input [15:0] in_1; 
 input [15:0] in_2;
 input [15:0] in_3;
+*/
+input [15:0] sum_muladd;			//sum of multiplier_adder 
 input clear;
 input enable;
 output [15:0] sum;
@@ -47,8 +46,8 @@ reg [15:0] sum = 0;
 always@(posedge clk) begin
     if(!enable) sum<=sum;
     else if(clear)
-        sum <= (in_0 + in_1 + in_2 + in_3);
-    else sum <= sum + (in_0 + in_1 + in_2 + in_3);
+        sum <= sum_muladd;
+    else sum <= sum + sum_muladd;
     end
 
 
