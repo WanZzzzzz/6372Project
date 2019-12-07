@@ -45,18 +45,14 @@ wire [15:0] weight_addr;
 wire [15:0] out_addr;
 wire w_ena;
 wire in_ena;
-wire o_ena;  // suspended, replaced by wr_rdy
+wire o_ena;  										// suspended, replaced by wr_rdy
 wire wea;
 wire [7:0] out_wea;
-<<<<<<< HEAD
-wire [63:0] ifm_dout;							//These are neightbor data in middle layers, 
-wire [63:0] weight_dout;						//doesn't have any significance, just random values.
-=======
 
 //----------- data -----------------//
-wire [63:0] ifm_dout;
-wire [63:0] weight_dout;
->>>>>>> master
+wire [63:0] ifm_dout;							//These are neightbor data in middle layers, 
+wire [63:0] weight_dout;						//doesn't have any significance, just random values.
+
 wire [15:0] ifm_0, ifm_1,ifm_2,ifm_3;
 wire [15:0] w_0, w_1,w_2,w_3;
 wire [15:0] product_0,product_1,product_2,product_3;
@@ -64,7 +60,7 @@ wire [15:0] product_0,product_1,product_2,product_3;
 
 
 wire [63:0] psum_pkd;
-wire [63:0] dout; // suspended wire, any problem?
+wire [63:0] dout; 								// suspended wire, any problem?
 
 //----------------  signals for write control----------------//
 
