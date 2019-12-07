@@ -20,40 +20,36 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module write_data(
+module data_pack(
      neuron_rdy
-     ,plane_rdy
-    ,sel
+    ,plane_rdy
     ,din_acc
     ,din_ram
     ,dout
     );
 input neuron_rdy;
 input plane_rdy;
-input sel;
 input [15:0] din_acc;
-input [15:0] din_ram;
+input [63:0] din_ram;
 output [63:0] dout;
-reg [1:0] pos = 0;
-reg [15:0] psum_0 = 0;
-reg [15:0] psum_1 = 0;
-reg [15:0] psum_2 = 0;
-reg [15:0] psum_3 = 0;
-reg [63:0] psum_pkd = 0;
+
+
+reg [63:0] dout = 0;
+reg [1:0] counter = 0;
+
 always@(posedge neuron_rdy) begin
-    if (sel) begin
-        if(pos == 3) pos <= 0;
-        else pos <= pos + 1;
-        end
-    case(pos)
-    2'b00: psum_0 <= din;
-    2'b01: psum_1 <= din;
-    2'b10: psum_2 <= din;
-    2'b11: psum_3 <= din;
+    case(counter)
+    2'b00: dout <= {din_acc,din_ram[47:0]};
+    2'b01: dout <= {din_ram[63:48],din_acc,din_ram[31:0]};
+    2'b10: dout <= {din_ram[63:32],din_acc,din_ram[15:0]};
+    2'b11: dout <= {din_ram[63:16],din_acc};
     endcase
+    
 end
-always@(posedge clk) begin
-    psum_pkd <= {psum_0,psum_1,psum_2,psum_3};
-end
+always@(posedge plane_rdy) begin
+    if(counter == 3) counter <= 0;
+    else counter <= counter + 1;
+    end
+    
 
 endmodule
