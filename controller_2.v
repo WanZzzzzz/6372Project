@@ -74,10 +74,7 @@ always@(in) begin
     else if(counter_2 == num_to_cnt) begin counter_2<=0;write_rdy <= 1;out_addr<=out_addr + 1;end
     else begin counter_2<= counter_2+1;write_rdy <= 0;end    
 end 
-always@(in) begin
-    if(plane_rdy == 1) counter_3 <= counter_3 + 1;
-    else counter_3 <= counter_3;
-    end
+
 always@(in) begin
     if(plane_rdy == 1) begin counter_3 <= counter_3 + 1; out_addr <= (counter_3)*coe; end
     else counter_3 <= counter_3;
@@ -90,13 +87,34 @@ module plane_rdy(
     in
     ,plane_rdy
     );
-input [15:0] in;
+input in;
 output plane_rdy;
 reg [1:0] plane_rdy = 0;
 reg [15:0] num_to_cnt = 16'd783; // R*C - 1
 reg [15:0] counter = 0;
 always@(posedge in) begin
-    if(counter == num_to_cnt) begin counter<=0;plane_rdy<=1;end
-    else begin counter<= counter+1; plane_rdy<=0;end    
-end 
+    if(counter == num_to_cnt) begin counter<=0; plane_rdy<=1;end
+    else begin counter<= counter+1;end
+    end    
+always@(negedge in) begin
+    plane_rdy <= 0;
+    end
+
 endmodule
+
+
+//module out_addr_rdy(
+//    wr_rdy
+//    ,plane_rdy
+//    ,out_addr);
+//input wr_rdy;
+//input plane_rdy;
+//output [15:0] out_addr;
+
+//reg [15:0] out_addr = -1;
+//always@(posedge wr_rdy) begin
+//    if()
+//    out_addr <= out_addr + 1;
+//    end
+//always@(posedge plane_rdy) begin
+//    if(counter == 4)      
