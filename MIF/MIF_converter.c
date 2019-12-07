@@ -7,9 +7,10 @@ int main(int argc, char* argv[])
 	char* hex_convert(int); 
     //har const* const fileName = argv[1]; /* should check that argc > 1 */
     
-	char fileName[] = "input.coe";
+	//char fileName[] = "input.coe";
+	char fileName[] = "weight.coe";
 	//char fileName[] = "test.txt";
-	char MIFName[]  = "MIF.txt";
+	char MIFName[]  = "MIF_weight.txt";
 	FILE* file = fopen(fileName, "rb"); /* should check the result */
     FILE* MIF  = fopen(MIFName,"w+");
 	char line[256];
@@ -19,9 +20,9 @@ int main(int argc, char* argv[])
 	//fputs("%  multiple-line comment\n",MIF);
 	//fputs("multiple-line comment  %\n",MIF);
 	fputs("-- single-line comment\n",MIF);
-	fputs("-- Caution: Multiple comment % is not allowed!",MIF);
-	fputs("DEPTH = 256;                   -- The size of data in bits\n",MIF);
-	fputs("WIDTH = 16;                    -- The size of memory in words\n",MIF);
+	fputs("-- Caution: Multiple comment % is not allowed!\n",MIF);
+	fputs("DEPTH = 1024;                   -- The size of data in bits\n",MIF);
+	fputs("WIDTH = 64;                    -- The size of memory in words\n",MIF);
 	fputs("ADDRESS_RADIX = HEX;          -- The radix for address values\n",MIF);
 	fputs("DATA_RADIX = BIN;             -- The radix for data values\n",MIF);
 	fputs("CONTENT                       -- start of (address : data pairs)\n",MIF);
