@@ -43,6 +43,7 @@ wire [3:0] jj;
 wire [15:0] ifm_addr;
 wire [15:0] weight_addr;
 wire [15:0] out_addr;
+wire [15:0] out_addr_2;
 wire w_ena;
 wire in_ena;
 wire o_ena;  										// suspended, replaced by wr_rdy
@@ -60,7 +61,9 @@ wire [15:0] result_muladd;						//result of multiplier_adder,doesn't need four r
 
 
 wire [63:0] psum_pkd;
-wire [63:0] dout; 								// suspended wire, any problem?
+
+wire [63:0] din_ram; 							// suspended wire, any problem?
+
 
 //----------------  signals for write control----------------//
 
@@ -74,6 +77,8 @@ wire acc_enable;
 wire start;
 wire start_2;
 assign result = sum;
+
+
 
 
 loop for_loop(
@@ -232,26 +237,35 @@ neu_rdy neuron_ok(
     .plane_rdy(plane_rdy),
     .neuron_rdy(neuron_rdy),
     .write_rdy(wr_rdy),
-    .out_addr(out_addr));
+    .out_addr(out_addr),
+    .out_addr_2(out_addr_2));
     
 plane_rdy plane_ok(
     .in(neuron_rdy),
     .plane_rdy(plane_rdy));           
     
     
-out_mux sel_channel(
-    .clk(clk),
-    .sel(plane_rdy),
-    .din(sum),
-    .psum_pkd(psum_pkd)
-);   
+
+
+data_pack dpack(
+    .neuron_rdy(neuron_rdy),
+    .plane_rdy(plane_rdy),
+    .din_acc(sum),
+    .din_ram(din_ram),
+    .dout(psum_pkd));   
+ 
 /*    
+=======
+
+    
+>>>>>>> master
 blk_mem_output out_buf(
     .clka(clk),
     .ena(wr_rdy),
     .wea(out_wea),
     .addra(out_addr),
     .dina(psum_pkd),
+<<<<<<< HEAD
     .douta(dout));
 
 */
@@ -267,5 +281,11 @@ RAM1 out_buf(
 
 );
 
+=======
+    .clkb(clk),
+    .enb(wr_rdy),
+    .addrb(out_addr_2),
+    .doutb(din_ram));
+>>>>>>> master
     
 endmodule

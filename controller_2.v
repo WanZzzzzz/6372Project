@@ -48,6 +48,7 @@ module neu_rdy(
     ,neuron_rdy
     ,write_rdy
     ,out_addr
+    ,out_addr_2
     );
 input [15:0] in;
 input start;
@@ -56,7 +57,9 @@ input plane_rdy;
 output neuron_rdy;
 output write_rdy;
 output [15:0] out_addr;
+output [15:0] out_addr_2;
 reg [15:0] out_addr = -1'b1;
+reg [15:0] out_addr_2 = -1'b1;
 reg neuron_rdy = 0;
 reg write_rdy = 0;
 reg [7:0] num_to_cnt = 8'd24 ; // (in_channel/4+1) * 5 * 5 - 1   ;  +2 is to delay the signal for 2 cycles
