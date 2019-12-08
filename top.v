@@ -67,6 +67,7 @@ wire [63:0] din_ram; // suspended wire, any problem?
 wire neuron_rdy;
 wire wr_rdy;
 wire plane_rdy;
+wire plane_rdy2;
 wire [15:0] sum;
 
 wire layer_ready;
@@ -177,25 +178,28 @@ neu_rdy neuron_ok(
     
 plane_rdy plane_ok(
     .in(neuron_rdy),
-    .plane_rdy(plane_rdy));           
+    .in2(wr_rdy),
+    .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2));           
     
 out_addr_rdy gen_out_addr(
     .wr_rdy(wr_rdy),
     .neuron_rdy(neuron_rdy),
     .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2),
     .out_addr(out_addr),
     .out_addr_2(out_addr_2));    
     
 data_pack dpack(
     .neuron_rdy(neuron_rdy),
-    .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2),
     .din_acc(sum),
     .din_ram(din_ram),
     .dout(psum_pkd));   
     
 blk_mem_output out_buf(
     .clka(clk),
-    .ena(wr_rdy),
+    .ena(neuron_rdy),
     .wea(out_wea),
     .addra(out_addr),
     .dina(psum_pkd),
