@@ -93,7 +93,7 @@ always@(posedge clock) begin
     ifm_addr <= (n/4)*in_size*in_size + (r+i)*in_size + (c+j);
     weight_addr <= m*in_channel*k*k + (n/4)*k*k + i*k + j;
     if(j == 3) start <= 1;
-    if(i == 1) start_2 <= 1;
+    if(j == 1) start_2 <= 1;
     if(j == 2) acc_enable <= 1;
 //    out_addr_i <= r*out_size + c;
     end

@@ -172,16 +172,19 @@ neu_rdy neuron_ok(
     .in(weight_addr),
     .start(start),
     .start_2(start_2),
-    .plane_rdy(plane_rdy),
     .neuron_rdy(neuron_rdy),
-    .write_rdy(wr_rdy),
-    .out_addr(out_addr),
-    .out_addr_2(out_addr_2));
+    .write_rdy(wr_rdy));
     
 plane_rdy plane_ok(
     .in(neuron_rdy),
     .plane_rdy(plane_rdy));           
     
+out_addr_rdy gen_out_addr(
+    .wr_rdy(wr_rdy),
+    .neuron_rdy(neuron_rdy),
+    .plane_rdy(plane_rdy),
+    .out_addr(out_addr),
+    .out_addr_2(out_addr_2));    
     
 data_pack dpack(
     .neuron_rdy(neuron_rdy),
