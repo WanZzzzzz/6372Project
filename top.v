@@ -258,21 +258,23 @@ data_pack dpack(
     .dout(psum_pkd));   
  
 /*    
-=======
 
-    
->>>>>>> master
+
 blk_mem_output out_buf(
     .clka(clk),
     .ena(wr_rdy),
     .wea(out_wea),
     .addra(out_addr),
     .dina(psum_pkd),
-<<<<<<< HEAD
-    .douta(dout));
+    .clkb(clk),
+    .enb(wr_rdy),
+    .addrb(out_addr_2),
+    .doutb(din_ram));
 
+	 
 */
 
+/*
 RAM1 out_buf(
 	out_addr
 	,clk
@@ -283,12 +285,20 @@ RAM1 out_buf(
 
 
 );
+*/
 
-=======
-    .clkb(clk),
-    .enb(wr_rdy),
-    .addrb(out_addr_2),
-    .doutb(din_ram));
->>>>>>> master
+RAM2 out_buf(
+	out_addr,								//addr_a --->out_addr
+	out_addr_2,								//addr_b --->out_addr2
+	clk,										//clock  --->clk		
+	psum_pkd,								//data_a --->psum_pkd
+	,
+	rden_a,
+	rden_b,
+	wren_a,
+	wren_b,
+	q_a,
+	q_b);
+
     
 endmodule
