@@ -65,6 +65,7 @@ wire [63:0] din_ram; // suspended wire, any problem?
 //----------------  signals for write control----------------//
 
 wire neuron_rdy;
+wire neuron_rdy_ahead;   // one cyle ahead
 wire wr_rdy;
 wire plane_rdy;
 wire plane_rdy2;
@@ -74,6 +75,7 @@ wire layer_ready;
 wire acc_enable;
 wire start;
 wire start_2;
+wire start_3;
 assign result = sum;
 
 
@@ -108,7 +110,8 @@ controller ctl(
     .out_wea(out_wea),
     .acc_enable(acc_enable),
     .start(start),
-    .start_2(start_2));
+    .start_2(start_2),
+    .start_3(start_3));
     
 blk_mem_input ifm_buf (
   .clka(clk),    // input wire clka
@@ -163,8 +166,9 @@ acc accumulator(
     .in_1(product_1),
     .in_2(product_2),
     .in_3(product_3),
-    .clear(neuron_rdy),
+    .clear(neuron_rdy_ahead),
     .enable(acc_enable),
+    .plane_rdy(plane_rdy2),
     .sum(sum)
    
     );
@@ -173,7 +177,9 @@ neu_rdy neuron_ok(
     .in(weight_addr),
     .start(start),
     .start_2(start_2),
+    .start_3(start_3),
     .neuron_rdy(neuron_rdy),
+    .neuron_rdy_ahead(neuron_rdy_ahead),
     .write_rdy(wr_rdy));
     
 plane_rdy plane_ok(

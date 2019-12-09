@@ -44,22 +44,27 @@ module neu_rdy(
     in
     ,start
     ,start_2  // control output address
+    ,start_3
     ,neuron_rdy
+    ,neuron_rdy_ahead
     ,write_rdy
     );
 input [15:0] in;
 input start;
 input start_2;
+input start_3;
 output neuron_rdy;
+output neuron_rdy_ahead;
 output write_rdy;
 
 reg neuron_rdy = 0;
+reg neuron_rdy_ahead = 0;
 reg write_rdy = 0;
 reg [7:0] num_to_cnt = 8'd24 ; // (in_channel/4+1) * 5 * 5 - 1   ;  +2 is to delay the signal for 2 cycles
 
 reg [7:0] counter = 0;
 reg [7:0] counter_2 = 0;
-
+reg [7:0] counter_3 = 0;
 
 always@(in) begin
     if(!start) counter<=counter;
@@ -72,6 +77,13 @@ always@(in) begin
     else if(counter_2 == num_to_cnt) begin counter_2<=0;write_rdy <= 1;end
     else begin counter_2<= counter_2+1;write_rdy <= 0;end    
 end 
+
+always@(in) begin
+    if(!start_3) counter_3<=counter_3;
+    else if(counter_3 == num_to_cnt) begin counter_3<=0;neuron_rdy_ahead <= 1;end
+    else begin counter_3<= counter_3+1;neuron_rdy_ahead <= 0;end    
+end 
+
 
 endmodule
 
@@ -87,8 +99,8 @@ input in;
 input in2;
 output plane_rdy;
 output plane_rdy2;
-reg [1:0] plane_rdy = 0;
-reg [1:0] plane_rdy2 = 0;
+reg plane_rdy = 0;
+reg plane_rdy2 = 0;
 reg [15:0] num_to_cnt = 16'd784; // R*C - 1
 reg [15:0] counter = 0;
 reg [15:0] counter2 = 0;
@@ -105,7 +117,7 @@ always@(posedge in2) begin
     if(counter2 == num_to_cnt) begin counter2<=1; plane_rdy2<=1;end
     else begin counter2<= counter2+1;end
     end    
-always@(negedge in) begin
+always@(negedge in2) begin
     plane_rdy2 <= 0;
     end
     
