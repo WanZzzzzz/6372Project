@@ -27,13 +27,15 @@ module top(
 //    ,ifm_addr
 //    ,weight_addr
     ,dina
-    ,result);
+    ,display
+    ,answer);
 
 input clk;
 //input ena;
 //input wea;
 input [63:0] dina;
-output [15:0] result;
+output [15:0] display;
+output answer;
 wire [7:0] mm;
 wire [7:0] rr;
 wire [7:0] cc;
@@ -60,7 +62,7 @@ wire [15:0] product_0,product_1,product_2,product_3;
 
 
 wire [63:0] psum_pkd;
-wire [63:0] din_ram; // suspended wire, any problem?
+wire [63:0] din_ram; 
 
 //----------------  signals for write control----------------//
 
@@ -78,11 +80,11 @@ wire start;
 wire start_2;
 wire start_3;
 
-assign result = sum;
+
 
 wire out_wea_2;
 wire [63:0] dinb;
-wire answer;
+
 assign out_wea_2 = !out_wea;
 
 
@@ -228,7 +230,8 @@ comp compare(
     .ena(out_wea_2),
     .a(din_ram),
     .b(dinb),
-    .o(answer));
+    .o(answer),
+    .display(display));
 
 
 blk_mem_gen_0 true_value_buf(

@@ -170,13 +170,17 @@ always@(posedge plane_rdy2) begin
     out_addr_2 <= (out_channel_idx/4)*out_size;
     end   
         
-always@(posedge plane_rdy) begin                                               // plane_rdy is the later signal,idx change after it to make the address correct.
+always@(posedge plane_rdy) begin
+                                                // plane_rdy is the later signal,idx change after it to make the address correct.
     out_channel_idx <= out_channel_idx + 1;
     end
 
-always@(posedge clk) begin
+always@(negedge plane_rdy) begin
     if(out_channel_idx==7) begin out_addr_2 <= 0; out_wea <= 0; end    // stop writing data to output buffer
-    else if(out_wea == 0) out_addr_2 <= out_addr_2 + 1; 
+    
     end   
+
+always@(posedge clk) begin
+    if(out_wea == 0) out_addr_2 <= out_addr_2 + 1;end
 endmodule
 

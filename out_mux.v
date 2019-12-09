@@ -68,19 +68,25 @@ module comp(
     ena
     ,a
     ,b
-    ,o);
+    ,o
+    ,display);
 input ena;
 input [63:0] a;
 input [63:0] b;
 output o;
+output [15:0] display;
 reg o = 0;
 wire [15:0] aa;
 wire [15:0] bb;
+
+reg [15:0] display = 0;
 assign aa = a[63:48];
 assign bb = b[15:0];
 always@(*)begin
     if((aa==bb)&&(ena))
-    o <= 1;
-    else o<=0;
+    begin o <= 1;display <= aa;end
+    else if(ena) begin 
+    display <= aa; 
+    o<=0;end
     end
 endmodule
