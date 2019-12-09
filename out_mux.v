@@ -62,3 +62,25 @@ always@(posedge plane_rdy2) begin
     
 
 endmodule
+
+
+module comp(
+    ena
+    ,a
+    ,b
+    ,o);
+input ena;
+input [63:0] a;
+input [63:0] b;
+output o;
+reg o = 0;
+wire [15:0] aa;
+wire [15:0] bb;
+assign aa = a[63:48];
+assign bb = b[15:0];
+always@(*)begin
+    if((aa==bb)&&(ena))
+    o <= 1;
+    else o<=0;
+    end
+endmodule

@@ -35,7 +35,7 @@ module controller(
     ,input_ena
     ,out_ena
     ,wea
-    ,out_wea             // output buf write enable
+    //,out_wea             // output buf write enable
     ,acc_enable
     ,start
     ,start_2  
@@ -59,7 +59,7 @@ output weight_ena = 1;
 output input_ena = 1;
 output out_ena = 1;
 output wea;
-output [7:0] out_wea;
+
 output acc_enable;
 output start;
 output start_2;
@@ -77,7 +77,7 @@ reg input_ena;
 reg out_ena;
 
 reg wea = 0;
-reg [7:0] out_wea = 1;
+
 reg acc_enable = 0;  // when the accumulator start working
 reg start = 0; // when the neuron_ok start working
 reg start_2 = 0; // control output address

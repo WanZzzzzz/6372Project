@@ -72,11 +72,18 @@ wire plane_rdy2;
 wire [15:0] sum;
 
 wire layer_ready;
+wire finish;
 wire acc_enable;
 wire start;
 wire start_2;
 wire start_3;
+
 assign result = sum;
+
+wire out_wea_2;
+wire [63:0] dinb;
+wire answer;
+assign out_wea_2 = !out_wea;
 
 
 
@@ -107,7 +114,7 @@ controller ctl(
     .input_ena(in_ena),
     .out_ena(o_ena),
     .wea(wea),
-    .out_wea(out_wea),
+//    .out_wea(out_wea),
     .acc_enable(acc_enable),
     .start(start),
     .start_2(start_2),
@@ -178,6 +185,7 @@ neu_rdy neuron_ok(
     .start(start),
     .start_2(start_2),
     .start_3(start_3),
+    .out_wea(out_wea),
     .neuron_rdy(neuron_rdy),
     .neuron_rdy_ahead(neuron_rdy_ahead),
     .write_rdy(wr_rdy));
@@ -189,12 +197,14 @@ plane_rdy plane_ok(
     .plane_rdy2(plane_rdy2));           
     
 out_addr_rdy gen_out_addr(
+    .clk(clk),
     .wr_rdy(wr_rdy),
     .neuron_rdy(neuron_rdy),
     .plane_rdy(plane_rdy),
     .plane_rdy2(plane_rdy2),
     .out_addr(out_addr),
-    .out_addr_2(out_addr_2));    
+    .out_addr_2(out_addr_2),
+    .out_wea(out_wea));    
     
 data_pack dpack(
     .neuron_rdy(neuron_rdy),
@@ -214,4 +224,19 @@ blk_mem_output out_buf(
     .addrb(out_addr_2),
     .doutb(din_ram));
     
+comp compare(
+    .ena(out_wea_2),
+    .a(din_ram),
+    .b(dinb),
+    .o(answer));
+
+
+blk_mem_gen_0 true_value_buf(
+  .clka(clk),    // input wire clka
+  .ena(out_wea_2),      // input wire ena
+  .wea(wea),      // input wire [0 : 0] wea
+  .addra(out_addr_2),  // input wire [7 : 0] addra
+  .dina(dina),    // input wire [63 : 0] dina
+  .douta(dinb)  // output wire [63 : 0] douta
+); 
 endmodule

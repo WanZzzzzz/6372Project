@@ -45,6 +45,7 @@ module neu_rdy(
     ,start
     ,start_2  // control output address
     ,start_3
+    ,out_wea
     ,neuron_rdy
     ,neuron_rdy_ahead
     ,write_rdy
@@ -53,6 +54,7 @@ input [15:0] in;
 input start;
 input start_2;
 input start_3;
+input [7:0] out_wea;
 output neuron_rdy;
 output neuron_rdy_ahead;
 output write_rdy;
@@ -73,7 +75,8 @@ always@(in) begin
 end 
 
 always@(in) begin
-    if(!start_2) counter_2<=counter_2;
+    if(!out_wea) write_rdy<=1; 
+    else if(!start_2) counter_2<=counter_2;
     else if(counter_2 == num_to_cnt) begin counter_2<=0;write_rdy <= 1;end
     else begin counter_2<= counter_2+1;write_rdy <= 0;end    
 end 
@@ -125,25 +128,29 @@ endmodule
 
 
 module out_addr_rdy(
-    wr_rdy
+    clk
+    ,wr_rdy
     ,neuron_rdy
     ,plane_rdy
     ,plane_rdy2
     ,out_addr
-    ,out_addr_2);
+    ,out_addr_2
+    ,out_wea);     // stop write data to output buffer
+input clk;
 input wr_rdy;
 input neuron_rdy;
 input plane_rdy;
 input plane_rdy2;
 output [15:0] out_addr;
 output [15:0] out_addr_2;
+output [7:0] out_wea;
 reg [15:0] out_addr = -1'b1;
 reg [15:0] out_addr_2 = -1'b1;
 reg [7:0] counter = 0;
 reg [7:0] out_channel_idx = 1;
 reg full = 0;
 reg [15:0] out_size = 16'd784;
-
+reg [7:0] out_wea = 1;
 always@(posedge neuron_rdy) begin
     if(!plane_rdy) 
     out_addr <= out_addr + 1;
@@ -154,16 +161,22 @@ always@(posedge plane_rdy) begin
     end
     
 always@(posedge wr_rdy) begin
-    if(!plane_rdy2) 
+    if((!plane_rdy2)&&out_wea) 
     out_addr_2 <= out_addr_2 + 1;
     end
     
-always@(posedge plane_rdy2) begin    
+always@(posedge plane_rdy2) begin  
+    if(out_wea)  
     out_addr_2 <= (out_channel_idx/4)*out_size;
     end   
         
 always@(posedge plane_rdy) begin                                               // plane_rdy is the later signal,idx change after it to make the address correct.
     out_channel_idx <= out_channel_idx + 1;
     end
-    
+
+always@(posedge clk) begin
+    if(out_channel_idx==7) begin out_addr_2 <= 0; out_wea <= 0; end    // stop writing data to output buffer
+    else if(out_wea == 0) out_addr_2 <= out_addr_2 + 1; 
+    end   
 endmodule
+
