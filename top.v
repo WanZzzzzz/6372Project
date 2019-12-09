@@ -76,7 +76,7 @@ wire layer_ready;
 wire acc_enable;
 wire start;
 wire start_2;
-assign result = sum;
+//assign result = sum;
 
 
 
@@ -141,19 +141,19 @@ RAM1 ifm_buf(
 	,dina
 	,in_ena
 	,wea
-	,ifm_out
+	,ifm_dout
 
 
 );
 
 
-RAM1 weight_buf(
+ram1_weight weight_buf(
 	weight_addr
 	,clk
 	,dina
 	,w_ena
 	,wea
-	,weight_out
+	,weight_dout
 
 
 );
@@ -192,7 +192,7 @@ assign w_3 = weight_dout[15:0];
 	 
 */
 
-muladd inst(
+muladd1 inst(
 	clk
 	,ifm_0
 	,ifm_1
@@ -292,13 +292,17 @@ RAM2 out_buf(
 	out_addr_2,								//addr_b --->out_addr2
 	clk,										//clock  --->clk		
 	psum_pkd,								//data_a --->psum_pkd
-	,
-	rden_a,
-	rden_b,
-	wren_a,
-	wren_b,
-	q_a,
-	q_b);
+	64'd0,									//data_b --->blank
+	1'd0,											//rden_a --->0
+	wr_rdy,									//rden_b --->wr_rdy
+	wr_rdy,									//wren_a --->wr_rdy
+	1'd0,											//wren_b --->0
+	,										//q_a    --->blank
+	din_ram);								//q_b		--->din_ram
 
     
+
+assign result = sum;	 
+	 
+	 
 endmodule

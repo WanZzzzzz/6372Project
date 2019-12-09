@@ -1,5 +1,5 @@
 module muladd1(
-	clk
+	clock
 	,a_0
 	,a_1
 	,a_2
@@ -36,6 +36,9 @@ wire [15:0] mul_1_trim;
 wire [15:0] mul_2_trim;
 wire [15:0] mul_3_trim;
 
+reg  [15:0] sum;
+
+
 mul mul1(
 	a_0
 	,b_0
@@ -67,7 +70,7 @@ assign mul_1_trim = mul_1[23:8];
 assign mul_2_trim = mul_2[23:8];
 assign mul_3_trim = mul_3[23:8];
 
-always@(posedge clk) begin
+always@(posedge clock) begin
 
    sum <= mul_0_trim + mul_1_trim + mul_2_trim + mul_3_trim;
 	

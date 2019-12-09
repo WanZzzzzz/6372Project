@@ -75,24 +75,36 @@ end
 
 endmodule
 
+
+
+
+
+
+
 module plane_rdy(
     in
     ,plane_rdy
     );
 input in;
 output plane_rdy;
-reg [1:0] plane_rdy = 0;
+//reg [1:0] plane_rdy = 0;
+reg plane_rdy = 0;
 reg [15:0] num_to_cnt = 16'd783; // R*C - 1
 reg [15:0] counter = 0;
 always@(posedge in) begin
     if(counter == num_to_cnt) begin counter<=0; plane_rdy<=1;end
     else begin counter<= counter+1;end
     end    
+/*
 always@(negedge in) begin
     plane_rdy <= 0;
     end
-
+*/
 endmodule
+
+
+
+
 
 
 module out_addr_rdy(
@@ -114,12 +126,12 @@ reg full = 0;
 reg [15:0] coe = 16'd196;
 
 always@(posedge neuron_rdy) begin
-    if(plane_rdy) begin out_addr <= out_channel_idx * coe;end
+    if(plane_rdy) begin out_addr <= (out_channel_idx/4) * coe;end
     else out_addr <= out_addr + 1;
     end
 
 always@(posedge wr_rdy) begin
-    if(plane_rdy) begin out_addr_2 <= out_channel_idx * coe;end
+    if(plane_rdy) begin out_addr_2 <= (out_channel_idx/4) * coe;end
     else out_addr_2 <= out_addr_2 + 1;
     end
            

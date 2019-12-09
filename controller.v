@@ -55,9 +55,12 @@ input [3:0] j;
 output [15:0] ifm_addr;					//image feature map address
 output [15:0] weight_addr;				//weight address
 //output [15:0] out_addr;
-output weight_ena = 1;
-output input_ena = 1;
-output out_ena = 1;
+//output weight_ena = 1;
+//output input_ena = 1;
+//output out_ena = 1;
+output weight_ena ;
+output input_ena  ;
+output out_ena    ;
 output wea;
 output [7:0] out_wea;
 output acc_enable;
@@ -71,7 +74,13 @@ reg [15:0] weight_addr=1'bZ;
 //reg [15:0] out_addr;
 wire [3:0] out_reg_idx;
 
+wire weight_ena_wire = 1;
+wire input_ena_wire  = 1;
+wire out_ena_wire    = 1;
 
+assign weight_ena = weight_ena_wire;
+assign input_ena  = input_ena_wire;
+assign out_ena    = out_ena_wire;
 
 reg wea = 0;
 reg [7:0] out_wea = 1;
