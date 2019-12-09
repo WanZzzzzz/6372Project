@@ -38,8 +38,16 @@ module controller(
     ,out_wea             	// output buf write enable
     ,acc_enable
     ,start
+/*
+<<<<<<< HEAD
     ,start_2            
 //    ,out_chan_idx       	// output channel index: 0~3
+=======
+*/  
+	,start_2  
+    ,start_3          
+//    ,out_chan_idx       // output channel index: 0~3
+//>>>>>>> master
 //    ,cell_ready           // the value in 16 registers is ready to go into output buffer
 
     );
@@ -66,6 +74,7 @@ output [7:0] out_wea;
 output acc_enable;
 output start;
 output start_2;
+output start_3;
 //output [1:0] out_chan_idx;
 
 
@@ -87,6 +96,7 @@ reg [7:0] out_wea = 1;
 reg acc_enable = 0;  // when the accumulator start working
 reg start = 0; // when the neuron_ok start working
 reg start_2 = 0; // control output address
+reg start_3 = 0;
 //reg [3:0] out_chan_idx = 0;  // temporary set as first channel
 
 
@@ -103,6 +113,7 @@ always@(posedge clock) begin
     weight_addr <= m*in_channel*k*k + (n/4)*k*k + i*k + j;
     if(j == 3) start <= 1;
     if(j == 1) start_2 <= 1;
+    if(j == 2) start_3 <= 1;
     if(j == 2) acc_enable <= 1;
 //    out_addr_i <= r*out_size + c;
     end

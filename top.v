@@ -68,15 +68,24 @@ wire [63:0] din_ram; 							// suspended wire, any problem?
 //----------------  signals for write control----------------//
 
 wire neuron_rdy;
+wire neuron_rdy_ahead;   // one cyle ahead
 wire wr_rdy;
 wire plane_rdy;
+wire plane_rdy2;
 wire [15:0] sum;
 
 wire layer_ready;
 wire acc_enable;
 wire start;
 wire start_2;
+/*
+<<<<<<< HEAD
 //assign result = sum;
+=======
+*/
+wire start_3;
+assign result = sum;
+//>>>>>>> master
 
 
 
@@ -110,7 +119,8 @@ controller ctl(
     .out_wea(out_wea),
     .acc_enable(acc_enable),
     .start(start),
-    .start_2(start_2));
+    .start_2(start_2),
+    .start_3(start_3));
     
 /*blk_mem_input ifm_buf (
   .clka(clk),    								// input wire: clock
@@ -214,8 +224,9 @@ muladd1 inst(
     .in_1(product_1),
     .in_2(product_2),
     .in_3(product_3),
-    .clear(neuron_rdy),
+    .clear(neuron_rdy_ahead),
     .enable(acc_enable),
+    .plane_rdy(plane_rdy2),
     .sum(sum)
    
     );
@@ -223,8 +234,9 @@ muladd1 inst(
 acc accumulator(
     clk
     ,result_muladd
-    ,neuron_rdy
+    ,neuron_rdy_ahead
     ,acc_enable
+	,plane_rdy2
     ,sum
    
     );
@@ -234,17 +246,22 @@ neu_rdy neuron_ok(
     .in(weight_addr),
     .start(start),
     .start_2(start_2),
+    .start_3(start_3),
     .neuron_rdy(neuron_rdy),
+    .neuron_rdy_ahead(neuron_rdy_ahead),
     .write_rdy(wr_rdy));
     
 plane_rdy plane_ok(
     .in(neuron_rdy),
-    .plane_rdy(plane_rdy));           
+    .in2(wr_rdy),
+    .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2));           
     
 out_addr_rdy gen_out_addr(
     .wr_rdy(wr_rdy),
     .neuron_rdy(neuron_rdy),
     .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2),
     .out_addr(out_addr),
     .out_addr_2(out_addr_2));    
     
@@ -252,7 +269,7 @@ out_addr_rdy gen_out_addr(
 
 data_pack dpack(
     .neuron_rdy(neuron_rdy),
-    .plane_rdy(plane_rdy),
+    .plane_rdy2(plane_rdy2),
     .din_acc(sum),
     .din_ram(din_ram),
     .dout(psum_pkd));   
@@ -262,7 +279,7 @@ data_pack dpack(
 
 blk_mem_output out_buf(
     .clka(clk),
-    .ena(wr_rdy),
+    .ena(neuron_rdy),
     .wea(out_wea),
     .addra(out_addr),
     .dina(psum_pkd),
@@ -290,19 +307,20 @@ RAM1 out_buf(
 RAM2 out_buf(
 	out_addr,								//addr_a --->out_addr
 	out_addr_2,								//addr_b --->out_addr2
-	clk,										//clock  --->clk		
+	clk,									//clock  --->clk		
 	psum_pkd,								//data_a --->psum_pkd
 	64'd0,									//data_b --->blank
-	1'd0,											//rden_a --->0
+	1'd0,									//rden_a --->0
 	wr_rdy,									//rden_b --->wr_rdy
-	wr_rdy,									//wren_a --->wr_rdy
-	1'd0,											//wren_b --->0
+//	wr_rdy,									//wren_a --->wr_rdy
+	neuron_rdy,								//wren_a --->neuron_rdy
+	1'd0,									//wren_b --->0
 	,										//q_a    --->blank
 	din_ram);								//q_b		--->din_ram
 
     
 
-assign result = sum;	 
+//assign result = sum;	 
 	 
 	 
 endmodule
